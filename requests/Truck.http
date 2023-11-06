@@ -1,0 +1,5 @@
+# Requires REST Client extension
+
+@host=https://localhost:7183
+
+GET {{host}}/truck/health

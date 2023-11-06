@@ -1,0 +1,5 @@
+/* Add this to module's controllers project file */
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
