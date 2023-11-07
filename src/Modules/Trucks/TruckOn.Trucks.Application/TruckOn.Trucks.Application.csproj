@@ -1,5 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\TruckOn.Trucks.Application.Abstractions\TruckOn.Trucks.Application.Abstractions.csproj" />
+    <ProjectReference Include="..\TruckOn.Trucks.DataAccess.Abstractions\TruckOn.Trucks.DataAccess.Abstractions.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>

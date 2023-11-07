@@ -10,4 +10,11 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TruckOn.Trucks.Application.Abstractions\TruckOn.Trucks.Application.Abstractions.csproj" />
+    <ProjectReference Include="..\TruckOn.Trucks.DataAccess\TruckOn.Trucks.DataAccess.csproj" />
+    <ProjectReference Include="..\TruckOn.Trucks.DataAccess.Abstractions\TruckOn.Trucks.DataAccess.Abstractions.csproj" />
+    <ProjectReference Include="..\TruckOn.Trucks.Application\TruckOn.Trucks.Application.csproj" />
+  </ItemGroup>
+
 </Project>

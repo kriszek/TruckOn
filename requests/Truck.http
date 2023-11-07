@@ -3,3 +3,6 @@
 @host=https://localhost:7183
 
 GET {{host}}/truck/health
+
+###
+GET {{host}}/truck/get/dev007
