@@ -4,15 +4,24 @@ dotnet new classlib -o TruckOn.Trucks.Application
 dotnet new classlib -o TruckOn.Trucks.Application.Abstractions
 dotnet new classlib -o TruckOn.Trucks.DataAccess
 dotnet new classlib -o TruckOn.Trucks.DataAccess.Abstractions
+dotnet new classlib -o TruckOn.Trucks.Models
 
 Remove-Item **\Class1.cs -Recurse
 dotnet sln add (ls -r **\*.csproj)
 
-
-
-dotnet add TruckOn.Trucks.Controllers package Microsoft.AspNetCore.Mvc.Core
+### references
 
 dotnet add .\TruckOn.Api\ reference .\Modules\Trucks\TruckOn.Trucks.Controllers\
 
 
+### packages
+
+dotnet add TruckOn.Trucks.Controllers package Microsoft.AspNetCore.Mvc.Core
+
+
 dotnet add .\Modules\Trucks\TruckOn.Trucks.Application\ package Microsoft.Extensions.DependencyInjection.Abstractions
+
+dotnet add TruckOn.Trucks.Models package ErrorOr
+dotnet add TruckOn.Trucks.Controllers package ErrorOr
+dotnet add TruckOn.Trucks.Application package ErrorOr
+dotnet add TruckOn.Trucks.Application.Abstractions package ErrorOr

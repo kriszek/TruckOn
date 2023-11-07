@@ -1,3 +1,4 @@
+using ErrorOr;
 using TruckOn.Trucks.Models;
 
 namespace TruckOn.Trucks.Application.Abstractions
@@ -7,6 +8,8 @@ namespace TruckOn.Trucks.Application.Abstractions
     /// </summary>
     public interface ITrucksService
     {
-        Truck GetTruck(string code);
+        Task<ErrorOr<bool>> CreateTruck(Truck truck);
+
+        Task<Truck?> GetTruck(string code);
     }
 }

@@ -7,6 +7,7 @@ namespace TruckOn.Trucks.DataAccess.Abstractions
     /// </summary>
     public interface ITruckRepository
     {
-        Truck GetTruck(string code);
+        Task<Truck?> GetTruck(string code);
+        Task<bool> Create(Truck truck);
     }
 }

@@ -1,3 +1,4 @@
+using ErrorOr;
 using TruckOn.Trucks.Application.Abstractions;
 using TruckOn.Trucks.DataAccess.Abstractions;
 using TruckOn.Trucks.Models;
@@ -16,9 +17,20 @@ namespace TruckOn.Trucks.Application
             this.truckRepository = truckRepository;
         }
 
-        public Truck GetTruck(string code)
+        public async Task<ErrorOr<bool>> CreateTruck(Truck truck)
         {
-            return truckRepository.GetTruck(code);
+            if(await truckRepository.GetTruck(truck.Code) is not null)
+            {
+                return Errors.DuplicateCode;
+            }
+
+            return await truckRepository.Create(truck);
+        }
+
+
+        public async Task<Truck?> GetTruck(string code)
+        {
+            return await truckRepository.GetTruck(code);
         }
     }
 }

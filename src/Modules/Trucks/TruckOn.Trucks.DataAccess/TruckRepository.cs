@@ -1,3 +1,4 @@
+using System.Security.Permissions;
 using TruckOn.Trucks.DataAccess.Abstractions;
 using TruckOn.Trucks.Models;
 
@@ -8,9 +9,19 @@ namespace TruckOn.Trucks.DataAccess
     /// </summary>
     public class TruckRepository : ITruckRepository
     {
-        public Truck GetTruck(string code)
+        private static readonly Dictionary<string, Truck> trucks = new();
+
+        public Task<bool> Create(Truck truck)
         {
-            return new Truck(code, "Yellow Truck");
+            trucks.Add(truck.Code, truck);
+
+            return Task.FromResult(true);
+        }
+
+
+        public Task<Truck?> GetTruck(string code)
+        {
+            return Task.FromResult(trucks.GetValueOrDefault(code));
         }
     }
 }
