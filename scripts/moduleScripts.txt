@@ -2,7 +2,7 @@ dotnet new classlib -o TruckOn.Trucks.Controllers
 dotnet new classlib -o TruckOn.Trucks.Infrastructure
 dotnet new classlib -o TruckOn.Trucks.Application
 dotnet new classlib -o TruckOn.Trucks.Application.Abstractions
-dotnet new classlib -o TruckOn.Trucks.Application.Tests
+dotnet new xunit -o TruckOn.Trucks.Application.Tests
 dotnet new classlib -o TruckOn.Trucks.DataAccess
 dotnet new classlib -o TruckOn.Trucks.DataAccess.Abstractions
 dotnet new classlib -o TruckOn.Trucks.Models
