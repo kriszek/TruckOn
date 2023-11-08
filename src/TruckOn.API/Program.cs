@@ -1,11 +1,13 @@
 using TruckOn.API.Extensions;
+using Mapster;
 
 var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddControllers()
                     .AddModules();
     builder.Services.AddEndpointsApiExplorer()
-                    .AddSwaggerGen();
+                    .AddSwaggerGen()
+                    .AddMapster();
 }
 
 var app = builder.Build();

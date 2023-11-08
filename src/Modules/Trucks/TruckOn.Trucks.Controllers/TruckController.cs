@@ -1,7 +1,9 @@
 using ErrorOr;
+using MapsterMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TruckOn.Trucks.Application.Abstractions;
+using TruckOn.Trucks.Controllers.Contracts;
 using TruckOn.Trucks.Models;
 
 namespace TruckOn.Trucks.Controllers;
@@ -14,10 +16,12 @@ namespace TruckOn.Trucks.Controllers;
 public class TruckController : ControllerBase
 {
     private readonly ITrucksService trucksService;
+    private readonly IMapper mapper;
 
-    public TruckController(ITrucksService trucksService)
+    public TruckController(ITrucksService trucksService, IMapper mapper)
     {
         this.trucksService = trucksService;
+        this.mapper = mapper;
     }
 
     [HttpGet("{code}")]
@@ -25,13 +29,13 @@ public class TruckController : ControllerBase
     {
         Truck? truck = await trucksService.GetTruck(code);
 
-        return truck is null ? NotFound() : Ok(truck);
+        return truck is null ? NotFound() : Ok(mapper.Map<TruckDTO>(truck));
     }
 
     [HttpPost()]
-    public async Task<IActionResult> Create(Truck truck)
+    public async Task<IActionResult> Create(TruckDTO truck)
     {
-        var result = await trucksService.CreateTruck(truck);
+        var result = await trucksService.CreateTruck(mapper.Map<Truck>(truck));
 
         return result.MatchFirst(
             isSaved => isSaved ? Ok() : InternalProblem("Save failed"),

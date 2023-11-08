@@ -13,6 +13,6 @@ POST {{host}}/truck
 content-type: application/json
 
 {
-    "code": "dev007",
-    "name": "yellow truck"
+    "TruckCode": "dev007",
+    "TruckName": "yellow truck"
 }

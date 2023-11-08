@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using TruckOn.Shared;
 using TruckOn.Trucks.Application;
 using TruckOn.Trucks.Application.Abstractions;
 using TruckOn.Trucks.DataAccess;
@@ -9,9 +10,9 @@ namespace TruckOn.Trucks.Infrastructure;
 /// <summary>
 /// Extension methods configuring services for Trucks module
 /// </summary>
-public static class DependencyInjection
+public class TrucksServiceRegistrator : IServiceRegistrator
 {
-    public static IServiceCollection AddTruckServices(this IServiceCollection services)
+    public IServiceCollection AddModuleServices(IServiceCollection services)
     {
         return services
             .AddScoped<ITrucksService, TrucksService>()

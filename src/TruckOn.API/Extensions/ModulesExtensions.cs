@@ -1,3 +1,7 @@
+using System.Reflection;
+using Mapster;
+using Microsoft.VisualBasic;
+using TruckOn.Shared;
 using TruckOn.Trucks.Controllers;
 using TruckOn.Trucks.Infrastructure;
 
@@ -8,21 +12,39 @@ namespace TruckOn.API.Extensions
     /// </summary>
     public static class ModulesExtensions
     {
-        public static IMvcBuilder AddModules(this IMvcBuilder builder)
+        // add here one type from each module's controller project
+        // to automatically use module
+        private static readonly (Type controller, Type di )[] moduleTypes = { (typeof(TruckController), typeof(TrucksServiceRegistrator)) };
+
+        public static IMvcBuilder AddModules(this IMvcBuilder mvcBuilder)
         {
-            return builder
-                    .AddApplicationParts()
-                    .AddApplicationServices();
+            var builder = mvcBuilder;
+
+            foreach ((Type controller, Type di ) in moduleTypes)
+            {
+                Assembly controllerAssembly = controller.Assembly;
+
+                builder = builder.AddApplicationPart(controllerAssembly)
+                                .AddApplicationServices(di.Assembly);
+
+                // add mapster mappings                
+                TypeAdapterConfig.GlobalSettings.Scan(controllerAssembly);
+            }
+
+            return builder;
         }
-        
-        private static IMvcBuilder AddApplicationParts(this IMvcBuilder mvcBuilder)
+
+        private static IMvcBuilder AddApplicationServices(this IMvcBuilder mvcBuilder, Assembly assembly)
         {
-            return mvcBuilder.AddApplicationPart(typeof(TruckController).Assembly);
-        }
-        
-        private static IMvcBuilder AddApplicationServices(this IMvcBuilder mvcBuilder)
-        {
-            mvcBuilder.Services.AddTruckServices();
+            var instances = from t in assembly.GetTypes()
+                            where t.GetInterfaces().Contains(typeof(IServiceRegistrator))
+                                     && t.GetConstructor(Type.EmptyTypes) != null
+                            select Activator.CreateInstance(t) as IServiceRegistrator;
+
+            foreach (var instance in instances)
+            {
+                instance.AddModuleServices(mvcBuilder.Services);
+            }
 
             return mvcBuilder;
         }

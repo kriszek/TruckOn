@@ -16,6 +16,7 @@ dotnet sln add (ls -r **\*.csproj)
 
 dotnet add .\TruckOn.Api\ reference .\Modules\Trucks\TruckOn.Trucks.Controllers\
 
+dotnet add .\TruckOn.Trucks.Infrastructure\ reference ..\..\TruckOn.Shared\ 
 
 ### packages
 
@@ -33,3 +34,6 @@ dotnet add TruckOn.Trucks.Application.Tests package AutoFixture
 dotnet add TruckOn.Trucks.Application.Tests package AutoFixture.xUnit2
 dotnet add TruckOn.Trucks.Application.Tests package AutoFixture.AutoMoq
 dotnet add TruckOn.Trucks.Application.Tests package FluentAssertions
+
+dotnet add TruckOn.Trucks.Controllers package Mapster
+dotnet add ..\..\TruckOn.API package Mapster.DependencyInjection
