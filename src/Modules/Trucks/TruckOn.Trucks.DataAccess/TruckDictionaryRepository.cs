@@ -7,7 +7,7 @@ namespace TruckOn.Trucks.DataAccess
     /// <summary>
     /// Truck repository
     /// </summary>
-    public class TruckRepository : ITruckRepository
+    public class TruckDictionaryRepository : ITruckRepository
     {
         private static readonly Dictionary<string, Truck> trucks = new();
 

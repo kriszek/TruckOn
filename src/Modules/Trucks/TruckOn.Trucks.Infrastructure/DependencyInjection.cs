@@ -20,6 +20,6 @@ public class TrucksServiceRegistrator : IServiceRegistrator
         return services
             .AddScoped<IValidator<TruckDTO>, TruckDTOValidator>()
             .AddScoped<ITrucksService, TrucksService>()
-            .AddScoped<ITruckRepository, TruckRepository>();
+            .AddScoped<ITruckRepository, TruckDictionaryRepository>();
     }
 }
