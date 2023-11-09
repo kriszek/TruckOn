@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TruckOn.Shared;
 using TruckOn.Trucks.Application;
@@ -20,6 +21,10 @@ public class TrucksServiceRegistrator : IServiceRegistrator
         return services
             .AddScoped<IValidator<TruckDTO>, TruckDTOValidator>()
             .AddScoped<ITrucksService, TrucksService>()
-            .AddScoped<ITruckRepository, TruckDictionaryRepository>();
+            // .AddScoped<ITruckRepository, TruckDictionaryRepository>();
+            .AddScoped<ITruckRepository, TruckEFRepository>()
+            .AddDbContext<TruckEFContext>(options =>
+                options.UseSqlite("DataSource=Tracks.db"));
+        ;
     }
 }

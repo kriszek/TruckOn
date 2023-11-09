@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace TruckOn.Trucks.Models
 {
     /// <summary>
@@ -5,14 +7,19 @@ namespace TruckOn.Trucks.Models
     /// </summary>
     public class Truck
     {
-        public Truck(string code, string name)
-        {
-            Code = code;
-            Name = name;
-        }
+        [Key]
+        [Required]
+        [MaxLength(ModelRestrictions.TruckCodeMaxLength)]
+        public string Code { get; set; } = default!;
 
-        public string Code { get; set; }
+        [Required]
+        [MaxLength(ModelRestrictions.TruckNameMaxLength)]
+        public string Name { get; set; } = default!;
 
-        public string Name { get; set; }
+        [Required]
+        public TruckStatus Status { get; set; } = default!;
+
+        [MaxLength(ModelRestrictions.TruckDescriptionMaxLength)]
+        public string? Description { get; set; } = default!;
     }
 }

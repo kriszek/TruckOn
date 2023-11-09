@@ -7,12 +7,22 @@ GET {{host}}/truck/health
 ###
 GET {{host}}/truck/dev007
 
-
 ###
 POST {{host}}/truck
 content-type: application/json
 
 {
     "TruckCode": "dev007",
-    "TruckName": "yellow truck"
+    "TruckName": "yellow truck",
+    "TruckStatus": "Loading"
+}
+
+### Bad Request
+POST {{host}}/truck
+content-type: application/json
+
+{
+    "TruckCode": "dev007_1111111111",
+    "TruckName": null,
+    "TruckStatus": "uknownStatus"
 }
