@@ -17,6 +17,7 @@ dotnet sln add (ls -r **\*.csproj)
 dotnet add .\TruckOn.Api\ reference .\Modules\Trucks\TruckOn.Trucks.Controllers\
 
 dotnet add .\TruckOn.Trucks.Infrastructure\ reference ..\..\TruckOn.Shared\ 
+dotnet add .\TruckOn.Trucks.Infrastructure\ reference .\TruckOn.Trucks.Controllers\
 
 ### packages
 
@@ -37,3 +38,7 @@ dotnet add TruckOn.Trucks.Application.Tests package FluentAssertions
 
 dotnet add TruckOn.Trucks.Controllers package Mapster
 dotnet add ..\..\TruckOn.API package Mapster.DependencyInjection
+
+dotnet add TruckOn.Trucks.Controllers package FluentValidation
+dotnet add TruckOn.Trucks.Infrastructure package FluentValidation
+dotnet add ..\..\TruckOn.API package FluentValidation

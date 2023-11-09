@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.8.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
   </ItemGroup>
 
@@ -15,6 +16,7 @@
     <ProjectReference Include="..\TruckOn.Trucks.DataAccess\TruckOn.Trucks.DataAccess.csproj" />
     <ProjectReference Include="..\TruckOn.Trucks.DataAccess.Abstractions\TruckOn.Trucks.DataAccess.Abstractions.csproj" />
     <ProjectReference Include="..\TruckOn.Trucks.Application\TruckOn.Trucks.Application.csproj" />
+    <ProjectReference Include="..\TruckOn.Trucks.Controllers\TruckOn.Trucks.Controllers.csproj" />
     <ProjectReference Include="..\..\..\TruckOn.Shared\TruckOn.Shared.csproj" />
   </ItemGroup>
 
