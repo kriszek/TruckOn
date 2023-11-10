@@ -24,4 +24,20 @@ public class TruckEFRepository : ITruckRepository
     {
         return await db.Trucks.SingleOrDefaultAsync(t => t.Code == code);
     }
+
+    public async Task<bool> Update(Truck oldEntry, Truck newEntry)
+    {
+        db.Trucks.Entry(oldEntry).CurrentValues.SetValues(newEntry);
+
+        if (db.ChangeTracker.HasChanges())
+        {
+            int saveCount = await db.SaveChangesAsync();
+            return saveCount == 1;
+        }
+        else
+        {
+            return true;
+
+        }
+    }
 }

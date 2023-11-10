@@ -3,7 +3,7 @@ namespace TruckOn.Trucks.Application.Tests;
 public class TrucksServiceTests
 {
     [Theory, AutoDomainData]
-    public async void CreateTruck_ReturnsTrue_WhenTruckDoesNotExist_AndSaveSuccessful(
+    public async void UpsertTruck_ReturnsTrue_WhenTruckDoesNotExist_AndSaveSuccessful(
         [Frozen] Mock<ITruckRepository> truckReposotory,
         TrucksService sut, Truck truck)
     {
@@ -12,7 +12,7 @@ public class TrucksServiceTests
         truckReposotory.Setup(r => r.Create(truck)).ReturnsAsync(true);
 
         /// Act
-        var result = await sut.CreateTruck(truck);
+        var result = await sut.UpsertTruck(truck);
 
         /// Assert
         result.IsError.Should().BeFalse();
@@ -20,7 +20,7 @@ public class TrucksServiceTests
     }
 
     [Theory, AutoDomainData]
-    public async void CreateTruck_ReturnsFalse_WhenTruckDoesNotExist_AndSaveUnsuccessful(
+    public async void UpsertTruck_ReturnsFalse_WhenTruckDoesNotExist_AndSaveUnsuccessful(
         [Frozen] Mock<ITruckRepository> truckReposotory,
         TrucksService sut, Truck truck)
     {
@@ -29,7 +29,25 @@ public class TrucksServiceTests
         truckReposotory.Setup(r => r.Create(truck)).ReturnsAsync(false);
 
         /// Act
-        var result = await sut.CreateTruck(truck);
+        var result = await sut.UpsertTruck(truck);
+
+        /// Assert
+        result.FirstError.Should().Be(Errors.SaveFailed);
+    }
+
+    [Theory, AutoDomainData]
+    public async void UpsertTruck_ReturnsTrue_WhenTruckExists_AndSaveSuccessful(
+        [Frozen] Mock<ITruckRepository> truckReposotory,
+        TrucksService sut, Truck truck, Truck oldTruck)
+    {
+        /// Arrange
+        truck.Code = oldTruck.Code;
+
+        truckReposotory.Setup(r => r.GetTruck(truck.Code)).ReturnsAsync(oldTruck);
+        truckReposotory.Setup(r => r.Update(oldTruck, truck)).ReturnsAsync(true);
+
+        /// Act
+        var result = await sut.UpsertTruck(truck);
 
         /// Assert
         result.IsError.Should().BeFalse();
@@ -37,18 +55,21 @@ public class TrucksServiceTests
     }
 
     [Theory, AutoDomainData]
-    public async void CreateTruck_ReturnsDuplicateTruckError_WhenTruckExists(
+    public async void UpsertTruck_ReturnsError_WhenTruckExists_AndSaveUnsuccessful(
         [Frozen] Mock<ITruckRepository> truckReposotory,
-        TrucksService sut, Truck truck)
+        TrucksService sut, Truck truck, Truck oldTruck)
     {
         /// Arrange
-        truckReposotory.Setup(r => r.GetTruck(truck.Code)).ReturnsAsync(truck);
+        truck.Code = oldTruck.Code;
+
+        truckReposotory.Setup(r => r.GetTruck(truck.Code)).ReturnsAsync(oldTruck);
+        truckReposotory.Setup(r => r.Update(oldTruck, truck)).ReturnsAsync(false);
 
         /// Act
-        var result = await sut.CreateTruck(truck);
+        var result = await sut.UpsertTruck(truck);
 
         /// Assert
-        result.FirstError.Code.Should().Be(Errors.DuplicateCode.Code);
+        result.FirstError.Should().Be(Errors.SaveFailed);
     }
 
     [Theory, AutoDomainData]

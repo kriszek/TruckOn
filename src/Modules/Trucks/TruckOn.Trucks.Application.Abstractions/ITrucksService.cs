@@ -8,7 +8,12 @@ namespace TruckOn.Trucks.Application.Abstractions
     /// </summary>
     public interface ITrucksService
     {
-        Task<ErrorOr<bool>> CreateTruck(Truck truck);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="truck"></param>
+        /// <returns>true if new truck was created, false when it was updated, error when action failed</returns>
+        Task<ErrorOr<bool>> UpsertTruck(Truck truck);
 
         Task<Truck?> GetTruck(string code);
     }

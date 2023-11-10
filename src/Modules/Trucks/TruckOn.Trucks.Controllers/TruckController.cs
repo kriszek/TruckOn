@@ -32,13 +32,13 @@ public class TruckController : ControllerBase
         return truck is null ? NotFound() : Ok(mapper.Map<TruckDTO>(truck));
     }
 
-    [HttpPost()]
-    public async Task<IActionResult> Create(TruckDTO truck)
+    [HttpPut()]
+    public async Task<IActionResult> Upsert(TruckDTO truck)
     {
-        var result = await trucksService.CreateTruck(mapper.Map<Truck>(truck));
+        var result = await trucksService.UpsertTruck(mapper.Map<Truck>(truck));
 
         return result.MatchFirst(
-            isSaved => isSaved ? Ok() : InternalProblem("Save failed"),
+            isNewCretaed => isNewCretaed ? CreatedAtAction(nameof(Get), new { code = truck.TruckCode }, null) : NoContent(),
             error => Problemm(error));
     }
 
@@ -49,7 +49,7 @@ public class TruckController : ControllerBase
 
     private IActionResult Problemm(Error error)
     {
-        var statusCode = error.Type switch  
+        var statusCode = error.Type switch
         {
             ErrorType.Conflict => StatusCodes.Status409Conflict,
             ErrorType.Validation => StatusCodes.Status400BadRequest,

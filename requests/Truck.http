@@ -5,20 +5,21 @@
 GET {{host}}/truck/health
 
 ###
-GET {{host}}/truck/dev007
+GET {{host}}/truck/dev018
 
 ###
-POST {{host}}/truck
+PUT {{host}}/truck
 content-type: application/json
 
 {
-    "TruckCode": "dev007",
-    "TruckName": "yellow truck",
-    "TruckStatus": "Loading"
+    "TruckCode": "dev018",
+    "TruckName": "red truck",
+    "TruckStatus": "ToJob",
+    "TruckDescription": "Very good vechicle"
 }
 
 ### Bad Request
-POST {{host}}/truck
+PUT {{host}}/truck
 content-type: application/json
 
 {

@@ -9,5 +9,6 @@ namespace TruckOn.Trucks.DataAccess.Abstractions
     {
         Task<Truck?> GetTruck(string code);
         Task<bool> Create(Truck truck);
+        Task<bool> Update(Truck oldEntry, Truck newEntry);
     }
 }

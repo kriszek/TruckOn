@@ -17,16 +17,19 @@ namespace TruckOn.Trucks.Application
             this.truckRepository = truckRepository;
         }
 
-        public async Task<ErrorOr<bool>> CreateTruck(Truck truck)
+        public async Task<ErrorOr<bool>> UpsertTruck(Truck truck)
         {
-            if(await truckRepository.GetTruck(truck.Code) is not null)
+            var persistedTruck = await truckRepository.GetTruck(truck.Code);
+
+            if (persistedTruck is not null)
             {
-                return Errors.DuplicateCode;
+                return await truckRepository.Update(persistedTruck, truck) ? false : Errors.SaveFailed;
             }
-
-            return await truckRepository.Create(truck);
+            else
+            {
+                return await truckRepository.Create(truck) ? true : Errors.SaveFailed;
+            }
         }
-
 
         public async Task<Truck?> GetTruck(string code)
         {
