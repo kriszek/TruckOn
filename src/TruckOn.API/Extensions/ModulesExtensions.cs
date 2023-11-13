@@ -14,18 +14,18 @@ namespace TruckOn.API.Extensions
     {
         // add here one type from each module's controller project
         // to automatically use module
-        private static readonly (Type controller, Type di )[] moduleTypes = { (typeof(TruckController), typeof(TrucksServiceRegistrator)) };
+        private static readonly (Type controller, Type di)[] moduleTypes = { (typeof(TruckController), typeof(TrucksServiceRegistrator)) };
 
-        public static IMvcBuilder AddModules(this IMvcBuilder mvcBuilder)
+        public static IMvcBuilder AddModules(this IMvcBuilder mvcBuilder, ConfigurationManager configuration)
         {
             var builder = mvcBuilder;
 
-            foreach ((Type controller, Type di ) in moduleTypes)
+            foreach ((Type controller, Type di) in moduleTypes)
             {
                 Assembly controllerAssembly = controller.Assembly;
 
                 builder = builder.AddApplicationPart(controllerAssembly)
-                                .AddApplicationServices(di.Assembly);
+                                .AddApplicationServices(di.Assembly, configuration);
 
                 // add mapster mappings                
                 TypeAdapterConfig.GlobalSettings.Scan(controllerAssembly);
@@ -34,7 +34,7 @@ namespace TruckOn.API.Extensions
             return builder;
         }
 
-        private static IMvcBuilder AddApplicationServices(this IMvcBuilder mvcBuilder, Assembly assembly)
+        private static IMvcBuilder AddApplicationServices(this IMvcBuilder mvcBuilder, Assembly assembly, IConfiguration configuration)
         {
             var instances = from t in assembly.GetTypes()
                             where t.GetInterfaces().Contains(typeof(IServiceRegistrator))
@@ -43,7 +43,7 @@ namespace TruckOn.API.Extensions
 
             foreach (var instance in instances)
             {
-                instance.AddModuleServices(mvcBuilder.Services);
+                instance.AddModuleServices(mvcBuilder.Services, configuration);
             }
 
             return mvcBuilder;

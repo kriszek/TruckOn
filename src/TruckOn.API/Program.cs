@@ -6,8 +6,10 @@ using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 {
+    IConfiguration conf = builder.Configuration;
+
     builder.Services.AddControllers()
-                    .AddModules();
+                    .AddModules(builder.Configuration);
     builder.Services.AddEndpointsApiExplorer()
                     .AddFluentValidationAutoValidation()
                     .AddSwaggerGen()

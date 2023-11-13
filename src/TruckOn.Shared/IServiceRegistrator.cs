@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TruckOn.Shared;
 
@@ -7,5 +8,5 @@ namespace TruckOn.Shared;
 /// </summary>
 public interface IServiceRegistrator
 {
-    IServiceCollection AddModuleServices(IServiceCollection services);
+    IServiceCollection AddModuleServices(IServiceCollection services, IConfiguration configuration);
 }

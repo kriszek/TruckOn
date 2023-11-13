@@ -25,6 +25,8 @@ dotnet add TruckOn.Trucks.Controllers package Microsoft.AspNetCore.Mvc.Core
 
 dotnet add .\Modules\Trucks\TruckOn.Trucks.Application\ package Microsoft.Extensions.DependencyInjection.Abstractions
 
+dotnet add TruckOn.Trucks.Infrastructure package Microsoft.Extensions.Configuration.Abstractions
+
 dotnet add TruckOn.Trucks.Models package ErrorOr
 dotnet add TruckOn.Trucks.Controllers package ErrorOr
 dotnet add TruckOn.Trucks.Application package ErrorOr
