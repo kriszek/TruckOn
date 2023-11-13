@@ -26,6 +26,7 @@ public class TrucksServiceRegistrator : IServiceRegistrator
             .AddSingleton(trucksOptions)
             .AddScoped<IValidator<TruckDTO>, TruckDTOValidator>()
             .AddScoped<ITrucksService, TrucksService>()
+            .AddScoped<IStatusValidator, StatusValidator>()
             // .AddScoped<ITruckRepository, TruckDictionaryRepository>();
             .AddScoped<ITruckRepository, TruckEFRepository>()
             .AddDbContext<TruckEFContext>(options =>

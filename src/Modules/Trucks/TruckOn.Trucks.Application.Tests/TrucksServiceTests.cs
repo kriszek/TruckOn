@@ -1,3 +1,5 @@
+using TruckOn.Trucks.Application.Tests.DataAttributes;
+
 namespace TruckOn.Trucks.Application.Tests;
 
 public class TrucksServiceTests
@@ -38,6 +40,7 @@ public class TrucksServiceTests
     [Theory, AutoDomainData]
     public async void UpsertTruck_ReturnsTrue_WhenTruckExists_AndSaveSuccessful(
         [Frozen] Mock<ITruckRepository> truckReposotory,
+        [Frozen] Mock<IStatusValidator> statusValidator,
         TrucksService sut, Truck truck, Truck oldTruck)
     {
         /// Arrange
@@ -45,6 +48,8 @@ public class TrucksServiceTests
 
         truckReposotory.Setup(r => r.GetTruck(truck.Code)).ReturnsAsync(oldTruck);
         truckReposotory.Setup(r => r.Update(oldTruck, truck)).ReturnsAsync(true);
+
+        statusValidator.Setup(x => x.IsNewStatusProper(It.IsAny<TruckStatus>(), It.IsAny<TruckStatus>())).Returns(true);
 
         /// Act
         var result = await sut.UpsertTruck(truck);
@@ -57,6 +62,7 @@ public class TrucksServiceTests
     [Theory, AutoDomainData]
     public async void UpsertTruck_ReturnsError_WhenTruckExists_AndSaveUnsuccessful(
         [Frozen] Mock<ITruckRepository> truckReposotory,
+        [Frozen] Mock<IStatusValidator> statusValidator,
         TrucksService sut, Truck truck, Truck oldTruck)
     {
         /// Arrange
@@ -65,11 +71,33 @@ public class TrucksServiceTests
         truckReposotory.Setup(r => r.GetTruck(truck.Code)).ReturnsAsync(oldTruck);
         truckReposotory.Setup(r => r.Update(oldTruck, truck)).ReturnsAsync(false);
 
+        statusValidator.Setup(x => x.IsNewStatusProper(It.IsAny<TruckStatus>(), It.IsAny<TruckStatus>())).Returns(true);
+
         /// Act
         var result = await sut.UpsertTruck(truck);
 
         /// Assert
         result.FirstError.Should().Be(Errors.SaveFailed);
+    }
+
+    [Theory, AutoDomainData]
+    public async void UpsertTruck_ReturnsError_WhenTruckExists_AndStatusNotProper(
+        [Frozen] Mock<ITruckRepository> truckReposotory,
+        [Frozen] Mock<IStatusValidator> statusValidator,
+        TrucksService sut, Truck truck, Truck oldTruck)
+    {
+        /// Arrange
+        truck.Code = oldTruck.Code;
+
+        truckReposotory.Setup(r => r.GetTruck(truck.Code)).ReturnsAsync(oldTruck);
+
+        statusValidator.Setup(x => x.IsNewStatusProper(It.IsAny<TruckStatus>(), It.IsAny<TruckStatus>())).Returns(false);
+
+        /// Act
+        var result = await sut.UpsertTruck(truck);
+
+        /// Assert
+        result.FirstError.Should().Be(Errors.InvalidStatus);
     }
 
     [Theory, AutoDomainData]
