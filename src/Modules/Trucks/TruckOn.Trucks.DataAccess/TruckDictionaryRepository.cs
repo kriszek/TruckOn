@@ -34,11 +34,11 @@ namespace TruckOn.Trucks.DataAccess
         {
             IQueryable<Truck> data = trucks.Values.AsQueryable();
 
-            List<IQueryFilter<Truck>> pagingfilters = new(2);
+            List<IQueryFilter<Truck>> pagingfilters = new(filters.Count());
 
             foreach (var filter in filters)
             {
-                if (filter is TakeFilter<Truck> || filter is SkipFilter<Truck>)
+                if (filter is TakeFilter<Truck> || filter is SkipFilter<Truck> || filter is OrderByFilter<Truck>)
                 {
                     pagingfilters.Add(filter);
                 }

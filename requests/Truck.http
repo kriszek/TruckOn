@@ -15,7 +15,7 @@ PUT {{host}}/truck
 content-type: application/json
 
 {
-    "TruckCode": "dev008",
+    "TruckCode": "dev019",
     "TruckName": "blue truck",
     "TruckStatus": "AtJob",
     "TruckDescription": "Very good vechicle"
@@ -45,3 +45,6 @@ GET {{host}}/truck?truckName=blue&truckStatus=AtJob&truckStatus=ToJob
 
 ###
 GET {{host}}/truck?truckName=blue&truckStatus=AtJob&truckStatus=ToJob&pageSize=2&pageNumber=3
+
+###
+GET {{host}}/truck?truckDescription=good%20vechicle&order=truckName%20desc&order=truckCode

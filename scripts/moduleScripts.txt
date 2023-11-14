@@ -44,3 +44,5 @@ dotnet add ..\..\TruckOn.API package Mapster.DependencyInjection
 dotnet add TruckOn.Trucks.Controllers package FluentValidation
 dotnet add TruckOn.Trucks.Infrastructure package FluentValidation
 dotnet add ..\..\TruckOn.API package FluentValidation
+
+dotnet add TruckOn.Trucks.Models package Microsoft.EntityFrameworkCore.DynamicLinq

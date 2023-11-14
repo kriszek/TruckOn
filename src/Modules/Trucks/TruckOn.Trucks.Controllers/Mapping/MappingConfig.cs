@@ -58,6 +58,13 @@ public class MappingConfig : IRegister
             filters.Add(new TakeFilter<Truck>(queryDto.PageSize.Value));
         }
 
+        if (queryDto.Order is not null)
+        {
+            // because model and dto have different property names
+            var modelOrdering = queryDto.Order.Select(o => TruckFieldsMap.SortOrderMap.Single(m => string.Equals(m.Item1, o, StringComparison.InvariantCultureIgnoreCase)).Item2).ToArray();
+            filters.Add(new OrderByFilter<Truck>(modelOrdering));
+        }
+
         return filters;
     }
 }
