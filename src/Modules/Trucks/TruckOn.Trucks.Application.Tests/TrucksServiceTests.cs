@@ -150,4 +150,41 @@ public class TrucksServiceTests
         result.Should().Be(repositoryResult);
         truckReposotory.Verify();
     }
+
+    [Theory, AutoDomainData]
+    public async void DeleteTruck_ReturnsNotFOund_WhenNoTruckInRepository(
+        Truck truck,
+        [Frozen] Mock<ITruckRepository> truckReposotory,
+        TrucksService sut)
+    {
+        /// Arrange
+        truckReposotory.Setup(r => r.GetTruck(truck.Code)).ReturnsAsync((Truck?)null);
+
+        /// Act
+        var result = await sut.DeleteTruck(truck.Code);
+
+        /// Assert
+        result.FirstError.Should().Be(Errors.NotFound);
+    }
+
+    [Theory]
+    [InlineAutoDomainData(true)]
+    [InlineAutoDomainData(false)]
+    public async void DeleteTruck_ReturnsResultFromRepository_WhenTruckFound(
+        bool deletionResult,
+        Truck truck,
+        [Frozen] Mock<ITruckRepository> truckReposotory,
+        TrucksService sut)
+    {
+        /// Arrange
+        truckReposotory.Setup(r => r.GetTruck(truck.Code)).ReturnsAsync(truck);
+        truckReposotory.Setup(r => r.Delete(truck)).ReturnsAsync(deletionResult);
+
+        /// Act
+        var result = await sut.DeleteTruck(truck.Code);
+
+        /// Assert
+        result.IsError.Should().BeFalse();
+        result.Value.Should().Be(deletionResult);
+    }
 }

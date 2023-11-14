@@ -49,5 +49,12 @@ namespace TruckOn.Trucks.Application
         {
             return await truckRepository.GetTrucks(filters);
         }
+
+        public async Task<ErrorOr<bool>> DeleteTruck(string code)
+        {
+            var persistedTruck = await truckRepository.GetTruck(code);
+
+            return persistedTruck is null ? Errors.NotFound : await truckRepository.Delete(persistedTruck);
+        }
     }
 }

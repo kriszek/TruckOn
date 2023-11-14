@@ -8,6 +8,9 @@ GET {{host}}/truck/health
 GET {{host}}/truck/dev018
 
 ###
+DELETE {{host}}/truck/dev013
+
+###
 PUT {{host}}/truck
 content-type: application/json
 

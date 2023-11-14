@@ -20,5 +20,6 @@ namespace TruckOn.Trucks.Application.Abstractions
 
         Task<PageResult<Truck>> GetTrucks(IEnumerable<IQueryFilter<Truck>> filters);
 
+        Task<ErrorOr<bool>> DeleteTruck(string code);
     }
 }

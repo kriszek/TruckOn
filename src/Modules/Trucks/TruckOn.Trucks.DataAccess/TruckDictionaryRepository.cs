@@ -19,6 +19,11 @@ namespace TruckOn.Trucks.DataAccess
             return Task.FromResult(true);
         }
 
+        public Task<bool> Delete(Truck truck)
+        {
+            trucks.Remove(truck.Code);
+            return Task.FromResult(true);
+        }
 
         public Task<Truck?> GetTruck(string code)
         {

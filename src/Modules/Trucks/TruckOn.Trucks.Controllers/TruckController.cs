@@ -33,6 +33,16 @@ public class TruckController : ControllerBase
         return truck is null ? NotFound() : Ok(mapper.Map<TruckDTO>(truck));
     }
 
+    [HttpDelete("{code}")]
+    public async Task<IActionResult> Delete(string code)
+    {
+        ErrorOr<bool> result = await trucksService.DeleteTruck(code);
+
+        return result.MatchFirst(
+            isDeleted => isDeleted ? NoContent() : InternalProblem("Removal error"),
+            error => Problemm(error));
+    }
+
     [HttpPut()]
     public async Task<IActionResult> Upsert(TruckDTO truck)
     {
@@ -68,7 +78,7 @@ public class TruckController : ControllerBase
 
         PageResult<Truck> trucks = await trucksService.GetTrucks(filters);
 
-        return Ok(mapper.Map<PagedResponse<TruckDTO>>(trucks));
+        return trucks.Data.Any() ? Ok(mapper.Map<PagedResponse<TruckDTO>>(trucks)) : NoContent();
     }
 
     /// <summary>

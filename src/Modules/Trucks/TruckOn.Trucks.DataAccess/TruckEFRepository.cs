@@ -1,3 +1,4 @@
+using ErrorOr;
 using Microsoft.EntityFrameworkCore;
 using TruckOn.Trucks.DataAccess.Abstractions;
 using TruckOn.Trucks.Models;
@@ -20,6 +21,14 @@ public class TruckEFRepository : ITruckRepository
         int saveCount = await db.SaveChangesAsync();
         return saveCount == 1;
     }
+
+    public async Task<bool> Delete(Truck truck)
+    {
+        db.Trucks.Remove(truck);
+        int saveCount = await db.SaveChangesAsync();
+        return saveCount == 1;
+    }
+
 
     public async Task<Truck?> GetTruck(string code)
     {
