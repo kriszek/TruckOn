@@ -2,6 +2,7 @@ using ErrorOr;
 using TruckOn.Trucks.Application.Abstractions;
 using TruckOn.Trucks.DataAccess.Abstractions;
 using TruckOn.Trucks.Models;
+using TruckOn.Trucks.Models.QueryFilters;
 
 namespace TruckOn.Trucks.Application
 {
@@ -42,6 +43,11 @@ namespace TruckOn.Trucks.Application
         public async Task<Truck?> GetTruck(string code)
         {
             return await truckRepository.GetTruck(code);
+        }
+
+        public async Task<PageResult<Truck>> GetTrucks(IEnumerable<IQueryFilter<Truck>> filters)
+        {
+            return await truckRepository.GetTrucks(filters);
         }
     }
 }

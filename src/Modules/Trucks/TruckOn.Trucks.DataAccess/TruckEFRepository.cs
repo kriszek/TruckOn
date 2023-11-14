@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TruckOn.Trucks.DataAccess.Abstractions;
 using TruckOn.Trucks.Models;
+using TruckOn.Trucks.Models.QueryFilters;
 
 namespace TruckOn.Trucks.DataAccess;
 
@@ -23,6 +24,34 @@ public class TruckEFRepository : ITruckRepository
     public async Task<Truck?> GetTruck(string code)
     {
         return await db.Trucks.SingleOrDefaultAsync(t => t.Code == code);
+    }
+
+    public async Task<PageResult<Truck>> GetTrucks(IEnumerable<IQueryFilter<Truck>> filters)
+    {
+        IQueryable<Truck> data = db.Trucks;
+
+        List<IQueryFilter<Truck>> pagingfilters = new(2);
+
+        foreach (var filter in filters)
+        {
+            if (filter is TakeFilter<Truck> || filter is SkipFilter<Truck>)
+            {
+                pagingfilters.Add(filter);
+            }
+            else
+            {
+                data = filter.Modify(data);
+            }
+        }
+
+        int count = await data.CountAsync();
+
+        foreach (var filter in pagingfilters)
+        {
+            data = filter.Modify(data);
+        }
+
+        return new PageResult<Truck>(count, await data.ToListAsync());
     }
 
     public async Task<bool> Update(Truck oldEntry, Truck newEntry)

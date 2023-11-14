@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using TruckOn.Trucks.Application.Abstractions;
 using TruckOn.Trucks.Controllers.Contracts;
 using TruckOn.Trucks.Models;
+using TruckOn.Trucks.Models.QueryFilters;
 
 namespace TruckOn.Trucks.Controllers;
 
@@ -60,7 +61,15 @@ public class TruckController : ControllerBase
         return Problem(statusCode: statusCode, title: error.Description);
     }
 
+    [HttpGet()]
+    public async Task<IActionResult> Find([FromQuery] TruckQueryDTO query)
+    {
+        var filters = mapper.Map<IEnumerable<IQueryFilter<Truck>>>(query);
 
+        PageResult<Truck> trucks = await trucksService.GetTrucks(filters);
+
+        return Ok(mapper.Map<PagedResponse<TruckDTO>>(trucks));
+    }
 
     /// <summary>
     /// Very simple healthcheck method

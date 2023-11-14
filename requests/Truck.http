@@ -12,9 +12,9 @@ PUT {{host}}/truck
 content-type: application/json
 
 {
-    "TruckCode": "dev018",
-    "TruckName": "red truck",
-    "TruckStatus": "ToJob",
+    "TruckCode": "dev008",
+    "TruckName": "blue truck",
+    "TruckStatus": "AtJob",
     "TruckDescription": "Very good vechicle"
 }
 
@@ -27,3 +27,18 @@ content-type: application/json
     "TruckName": null,
     "TruckStatus": "uknownStatus"
 }
+
+###
+GET {{host}}/truck?truckName=red%20truck
+
+###
+GET {{host}}/truck?truckDescription=good%20vechicle
+
+###
+GET {{host}}/truck?truckName=blue
+
+###
+GET {{host}}/truck?truckName=blue&truckStatus=AtJob&truckStatus=ToJob
+
+###
+GET {{host}}/truck?truckName=blue&truckStatus=AtJob&truckStatus=ToJob&pageSize=2&pageNumber=3

@@ -1,5 +1,6 @@
 using ErrorOr;
 using TruckOn.Trucks.Models;
+using TruckOn.Trucks.Models.QueryFilters;
 
 namespace TruckOn.Trucks.Application.Abstractions
 {
@@ -16,5 +17,8 @@ namespace TruckOn.Trucks.Application.Abstractions
         Task<ErrorOr<bool>> UpsertTruck(Truck truck);
 
         Task<Truck?> GetTruck(string code);
+
+        Task<PageResult<Truck>> GetTrucks(IEnumerable<IQueryFilter<Truck>> filters);
+
     }
 }

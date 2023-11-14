@@ -1,4 +1,5 @@
 using TruckOn.Trucks.Application.Tests.DataAttributes;
+using TruckOn.Trucks.Models.QueryFilters;
 
 namespace TruckOn.Trucks.Application.Tests;
 
@@ -128,5 +129,25 @@ public class TrucksServiceTests
 
         /// Assert
         result.Should().BeNull();
+    }
+
+    [Theory, AutoDomainData]
+    public async void GetTrucks_CallsRepository_AndReturnsResults(
+        IEnumerable<IQueryFilter<Truck>> filters,
+        PageResult<Truck> repositoryResult,
+        [Frozen] Mock<ITruckRepository> truckReposotory,
+        TrucksService sut)
+    {
+        /// Arrange
+        var method = truckReposotory.Setup(r => r.GetTrucks(filters));
+        method.ReturnsAsync(repositoryResult);
+        method.Verifiable(Times.Exactly(1));
+
+        /// Act
+        var result = await sut.GetTrucks(filters);
+
+        /// Assert
+        result.Should().Be(repositoryResult);
+        truckReposotory.Verify();
     }
 }

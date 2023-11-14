@@ -1,4 +1,5 @@
 using TruckOn.Trucks.Models;
+using TruckOn.Trucks.Models.QueryFilters;
 
 namespace TruckOn.Trucks.DataAccess.Abstractions
 {
@@ -10,5 +11,6 @@ namespace TruckOn.Trucks.DataAccess.Abstractions
         Task<Truck?> GetTruck(string code);
         Task<bool> Create(Truck truck);
         Task<bool> Update(Truck oldEntry, Truck newEntry);
+        Task<PageResult<Truck>> GetTrucks(IEnumerable<IQueryFilter<Truck>> filters);
     }
 }
